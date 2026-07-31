@@ -1,4 +1,4 @@
-# RFID Smart Attendance Management System
+# RFID Smart Attendance Management System - By NetJet Labs
 
 > **Production-grade SaaS platform for automating institutional attendance at scale.**  
 > Built on PHP · MySQL · REST API · ESP32 · Bootstrap · Chart.js
@@ -98,20 +98,20 @@ A full-stack automated system where a student taps their RFID card on a wall-mou
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         HARDWARE LAYER                              │
 │                                                                     │
-│   ┌──────────────┐        ┌──────────────────────────────────┐     │
-│   │  RFID Card   │──tap──▶│   ESP32 + RDM6300 Reader Device  │     │
-│   │ ISO 14443-A  │        │  Wi-Fi · LED · Buzzer · UART     │     │
-│   └──────────────┘        └──────────────┬───────────────────┘     │
+│   ┌──────────────┐        ┌──────────────────────────────────┐      │
+│   │  RFID Card   │──tap ─▶│   ESP32 + RDM6300 Reader Device  │     │
+│   │ ISO 14443-A  │        │  Wi-Fi · LED · Buzzer · UART     │      │
+│   └──────────────┘        └──────────────┬───────────────────┘      │
 └──────────────────────────────────────────│──────────────────────────┘
                                            │  HTTPS POST JSON
                                            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │                          NETWORK LAYER                              │
 │                                                                     │
-│              ┌─────────────────────────────────┐                   │
-│              │        REST API Gateway          │                   │
-│              │   PHP 8.2 · HTTPS · Rate Limit   │                   │
-│              └────────┬──────────┬─────────────┘                   │
+│              ┌─────────────────────────────────┐                    │
+│              │        REST API Gateway         │                    │
+│              │   PHP 8.2 · HTTPS · Rate Limit  │                    │
+│              └────────┬──────────┬─────────────┘                    │
 └───────────────────────│──────────│──────────────────────────────────┘
                         │          │
             ┌───────────▼──┐  ┌────▼──────────┐  ┌────────────────┐
@@ -122,20 +122,20 @@ A full-stack automated system where a student taps their RFID card on a wall-mou
 ┌─────────────────────────────────────────────────────────────────────┐
 │                          DATA LAYER                                 │
 │                                                                     │
-│         ┌────────────────────────────────────────────┐             │
-│         │              MySQL 8.0 Database             │             │
-│         │  students · rfid_cards · attendance         │             │
-│         │  classes · users · reports · audit_logs     │             │
-│         └───────────────────┬────────────────────────┘             │
+│         ┌────────────────────────────────────────────┐              │
+│         │              MySQL 8.0 Database            │              │
+│         │  students · rfid_cards · attendance        │              │
+│         │  classes · users · reports · audit_logs    │              │
+│         └───────────────────┬────────────────────────┘              │
 └───────────────────────────────────────────────────────────────────--┘
                               │
 ┌─────────────────────────────────────────────────────────────────────┐
 │                      PRESENTATION LAYER                             │
 │                                                                     │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │
+│  ┌──────────────────┐  ┌───────────────────┐  ┌──────────────────┐  │
 │  │  Admin Dashboard │  │ Attendance Reports│  │Analytics Platform│  │
 │  │ PHP · Bootstrap  │  │  PDF · CSV · Print│  │Chart.js · Trends │  │
-│  └──────────────────┘  └──────────────────┘  └──────────────────┘  │
+│  └──────────────────┘  └───────────────────┘  └──────────────────┘  │
 │                                                                     │
 │  ┌──────────────────┐  ┌──────────────────┐                         │
 │  │  Teacher Portal  │  │  Student Portal  │                         │
@@ -378,13 +378,13 @@ rfid-attendance/
 
 ```
 USERS ──────────────┬──── CLASSES ──────────────┐
-  │                 │         │                  │
-  │ generates       │ teaches │ tracks           │
-  ▼                 │         ▼                  │
+  │                 │         │                 │
+  │ generates       │ teaches │ tracks          │
+  ▼                 │         ▼                 │
 REPORTS             └───▶ ATTENDANCE ◀─────── STUDENTS
-                               ▲                  │
-                               │         assigned │
-                           RFID_CARDS ◀───────────┘
+                               ▲                    │
+                               │         assigned   │
+                           RFID_CARDS ◀────────────┘
 ```
 
 ### 5.2 Full Schema
@@ -1172,10 +1172,10 @@ void flashBoth(int times) {
 
 ```
 Client / Device                    API Server
-     │                                 │
-     │  POST /auth/login               │
+     │                                  │
+     │  POST /auth/login                │
      │  { email, password }  ────────▶ │
-     │                                 │  Verify password_hash (bcrypt)
+     │                                  │  Verify password_hash (bcrypt)
      │                                 │  Generate access_token (1h TTL)
      │                                 │  Generate refresh_token (7d TTL)
      │  { access_token,      ◀──────── │
@@ -1412,7 +1412,7 @@ class ReportService
                     ┌─────────────────────────┐
                     │                         │
   [Student/Staff]   │                         │   [Admin/Teacher]
-       │            │                         │         │
+       │            │                         │          │
        │ RFID scan  │      0                  │ Reports  │
        ├──────────▶ │   RFID Attendance       ├ ◀────────┤
        │            │      System             │          │
@@ -1432,7 +1432,7 @@ class ReportService
 [Student]
     │ UID
     ▼
-┌──────────┐   Raw UID   ┌──────────┐   Verified ID  ┌──────────────┐
+┌──────────┐   Raw UID   ┌──────────┐   Verified ID   ┌──────────────┐
 │  P1      │ ──────────▶ │  P2      │ ─────────────▶ │  P3          │
 │ Capture  │             │ Validate │                 │  Log         │
 │  Scan    │             │ Identity │                 │  Attendance  │
@@ -1549,13 +1549,13 @@ Query attendance + JOIN students + classes
 Calculate per-student totals + percentages
          │
          ▼
-    ┌─────────────┐
-    │ Format?     │
-    ├─────────────┤
-    │ PDF → mPDF  │
-    │ CSV → fputcsv│
-    │ XLSX → PhpSpreadsheet
-    └──────┬──────┘
+    ┌───────────────────────┐
+    │ Format?               │
+    ├───────────────────────┤
+    │ PDF → mPDF            │
+    │ CSV → fputcsv         │
+    │ XLSX → PhpSpreadsheet |
+    └──────┬────────────────┘
            │
            ▼
 Save to /storage/reports/{id}.{ext}
@@ -2014,7 +2014,7 @@ git push origin feature/add-fingerprint-support
 ```
 MIT License
 
-Copyright (c) 2025 NetJet Labs — Nabil
+Copyright (c) 2025 NetJet Labs — Isitaq Ahmed Nabil
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -2035,7 +2035,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 <div align="center">
 
-**Built with ❤️ by [NetJet Labs](https://netjetlabs.com) — Where Ideas Take Flight**
+**Engineered by [NetJet Labs](https://netjetlabs.com) — Where Ideas Take Flight**
 
 PHP · MySQL · ESP32 · REST API · Bootstrap · Chart.js
 
